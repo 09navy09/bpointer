@@ -1,18 +1,19 @@
 <?php
-// app/Http/Controllers/UserController.php
 
 namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Profile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
     public function index()
     {
         $users = User::with('profile')->get();
-        return view('index', compact('users'));
+        $checkEmpty=DB::select('select * from users ');
+        return view('index', compact('users','checkEmpty'));
     }
 
     public function create()
@@ -25,13 +26,12 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required',
             'bio' => 'required',
-            // Add other validation rules as needed
         ]);
 
         $user = User::create(['name' => $request->input('name')]);
         $user->profile()->create(['bio' => $request->input('bio')]);
 
-        return redirect('users');
+        return redirect('users')->with('add','Employee Added');;
     }
 
     public function edit($id)
@@ -45,14 +45,13 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required',
             'bio' => 'required',
-            // Add other validation rules as needed
         ]);
 
         $user = User::find($id);
         $user->update(['name' => $request->input('name')]);
         $user->profile->update(['bio' => $request->input('bio')]);
 
-        return redirect()->route('users.index');
+        return redirect()->route('users.index')->with('edit','Employee Updated');
     }
 
     public function destroy($id)
@@ -60,6 +59,6 @@ class UserController extends Controller
         $user = User::find($id);
         $user->delete();
 
-        return redirect('users');
+        return redirect('users')->with('delete','Employee Deleted');
     }
 }

@@ -22,11 +22,8 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        // Validation
-
         $user = User::create($request->all());
         $user->profile()->create($request->input('profile'));
-
         return redirect()->route('users.index');
     }
 

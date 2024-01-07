@@ -1,7 +1,4 @@
 <?php
-
-// database/migrations/xxxx_xx_xx_create_profiles_table.php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,7 +11,6 @@ class CreateProfilesTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('bio');
-            // Add other profile fields as needed
             $table->timestamps();
         });
     }
